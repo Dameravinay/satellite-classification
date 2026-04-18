@@ -1,6 +1,7 @@
+python==3.10.*
 flask
-numpy
+numpy==1.23.5
 pillow
-tensorflow
+tensorflow==2.10.0
 gunicorn
 gdown
