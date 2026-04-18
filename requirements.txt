@@ -1,5 +1,6 @@
 flask
 numpy
 pillow
-tensorflow==2.10
+keras
 gunicorn
+gdown

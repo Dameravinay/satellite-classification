@@ -1,19 +1,39 @@
+import os
+import gdown
 from flask import Flask, render_template, request
 import numpy as np
-from tensorflow.keras.models import load_model
+import keras
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.applications.resnet50 import preprocess_input
-import os
 
 app = Flask(__name__)
 
-model = load_model("model.h5")
+# ===============================
+# MODEL DOWNLOAD (from Google Drive)
+# ===============================
+MODEL_PATH = "model.keras"
 
+if not os.path.exists(MODEL_PATH):
+    print("Downloading model...")
+    url = "https://drive.google.com/uc?id=1gX0aC9-eMoxNZA0uiBPpn_YhG7op5-zb"
+    gdown.download(url, MODEL_PATH, quiet=False)
+
+# ===============================
+# LOAD MODEL (only once)
+# ===============================
+model = keras.models.load_model(MODEL_PATH)
+
+# ===============================
+# CLASS LABELS
+# ===============================
 classes = ['AnnualCrop', 'Forest', 'HerbaceousVegetation', 'Highway',
            'Industrial', 'Pasture', 'PermanentCrop', 'Residential',
            'River', 'SeaLake']
 
 
+# ===============================
+# PREDICTION FUNCTION
+# ===============================
 def predict_image(img_path):
     img = load_img(img_path, target_size=(224, 224))
     img_array = img_to_array(img)
@@ -28,6 +48,9 @@ def predict_image(img_path):
     return predicted_class, confidence
 
 
+# ===============================
+# ROUTES
+# ===============================
 @app.route('/', methods=['GET', 'POST'])
 def index():
     prediction = None
@@ -49,5 +72,8 @@ def index():
                            image_path=image_path)
 
 
+# ===============================
+# RUN APP
+# ===============================
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
