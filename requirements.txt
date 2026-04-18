@@ -1,6 +1,6 @@
 flask
 numpy
 pillow
-keras
+tensorflow
 gunicorn
 gdown

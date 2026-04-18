@@ -2,7 +2,7 @@ import os
 import gdown
 from flask import Flask, render_template, request
 import numpy as np
-import keras
+from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from tensorflow.keras.applications.resnet50 import preprocess_input
 
@@ -21,8 +21,7 @@ if not os.path.exists(MODEL_PATH):
 # ===============================
 # LOAD MODEL (only once)
 # ===============================
-model = keras.models.load_model(MODEL_PATH)
-
+model = load_model(MODEL_PATH)
 # ===============================
 # CLASS LABELS
 # ===============================
